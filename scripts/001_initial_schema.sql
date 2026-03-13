@@ -63,15 +63,6 @@ CREATE POLICY "Patients can view their own profile" ON public.patient_profiles
 CREATE POLICY "Patients can update their own profile" ON public.patient_profiles
   FOR UPDATE USING (auth.uid() = user_id);
 
-CREATE POLICY "Doctors can view assigned patient profiles" ON public.patient_profiles
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.appointments
-      WHERE appointments.patient_id = patient_profiles.user_id
-      AND appointments.doctor_id = auth.uid()
-    )
-  );
-
 -- Patient biometrics table
 CREATE TABLE IF NOT EXISTS public.patient_biometrics (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -93,15 +84,6 @@ ALTER TABLE public.patient_biometrics ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Patients can view their own biometrics" ON public.patient_biometrics
   FOR SELECT USING (auth.uid() = patient_id);
 
-CREATE POLICY "Doctors can view patient biometrics" ON public.patient_biometrics
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.appointments
-      WHERE appointments.patient_id = patient_biometrics.patient_id
-      AND appointments.doctor_id = auth.uid()
-    )
-  );
-
 -- Voice conversations table
 CREATE TABLE IF NOT EXISTS public.voice_conversations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -117,15 +99,6 @@ ALTER TABLE public.voice_conversations ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Patients can view their own conversations" ON public.voice_conversations
   FOR SELECT USING (auth.uid() = patient_id);
-
-CREATE POLICY "Doctors can view patient conversations" ON public.voice_conversations
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.appointments
-      WHERE appointments.patient_id = voice_conversations.patient_id
-      AND appointments.doctor_id = auth.uid()
-    )
-  );
 
 -- Risk assessment table
 CREATE TABLE IF NOT EXISTS public.risk_assessments (
@@ -144,15 +117,6 @@ ALTER TABLE public.risk_assessments ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Patients can view their own assessments" ON public.risk_assessments
   FOR SELECT USING (auth.uid() = patient_id);
-
-CREATE POLICY "Doctors can view patient assessments" ON public.risk_assessments
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.appointments
-      WHERE appointments.patient_id = risk_assessments.patient_id
-      AND appointments.doctor_id = auth.uid()
-    )
-  );
 
 -- Doctor profiles table
 CREATE TABLE IF NOT EXISTS public.doctor_profiles (
@@ -268,14 +232,14 @@ CREATE POLICY "Doctors can update their own records" ON public.medical_records
   FOR UPDATE USING (auth.uid() = doctor_id);
 
 -- Create indexes for better query performance
-CREATE INDEX idx_users_role ON public.users(role);
-CREATE INDEX idx_patient_profiles_user_id ON public.patient_profiles(user_id);
-CREATE INDEX idx_patient_biometrics_patient_id ON public.patient_biometrics(patient_id);
-CREATE INDEX idx_voice_conversations_patient_id ON public.voice_conversations(patient_id);
-CREATE INDEX idx_risk_assessments_patient_id ON public.risk_assessments(patient_id);
-CREATE INDEX idx_risk_assessments_specialty ON public.risk_assessments(assigned_specialty);
-CREATE INDEX idx_doctor_profiles_user_id ON public.doctor_profiles(user_id);
-CREATE INDEX idx_appointments_patient_id ON public.appointments(patient_id);
-CREATE INDEX idx_appointments_doctor_id ON public.appointments(doctor_id);
-CREATE INDEX idx_appointments_date ON public.appointments(appointment_date);
-CREATE INDEX idx_medical_records_appointment_id ON public.medical_records(appointment_id);
+CREATE INDEX IF NOT EXISTS idx_users_role ON public.users(role);
+CREATE INDEX IF NOT EXISTS idx_patient_profiles_user_id ON public.patient_profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_patient_biometrics_patient_id ON public.patient_biometrics(patient_id);
+CREATE INDEX IF NOT EXISTS idx_voice_conversations_patient_id ON public.voice_conversations(patient_id);
+CREATE INDEX IF NOT EXISTS idx_risk_assessments_patient_id ON public.risk_assessments(patient_id);
+CREATE INDEX IF NOT EXISTS idx_risk_assessments_specialty ON public.risk_assessments(assigned_specialty);
+CREATE INDEX IF NOT EXISTS idx_doctor_profiles_user_id ON public.doctor_profiles(user_id);
+CREATE INDEX IF NOT EXISTS idx_appointments_patient_id ON public.appointments(patient_id);
+CREATE INDEX IF NOT EXISTS idx_appointments_doctor_id ON public.appointments(doctor_id);
+CREATE INDEX IF NOT EXISTS idx_appointments_date ON public.appointments(appointment_date);
+CREATE INDEX IF NOT EXISTS idx_medical_records_appointment_id ON public.medical_records(appointment_id);
