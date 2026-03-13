@@ -123,3 +123,73 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Accessibility Styles */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('https://cdn.jsdelivr.net/npm/opendyslexic@1.0.5/fonts/OpenDyslexic-Regular.ttf') format('truetype');
+  font-weight: normal;
+}
+
+/* Dyslexia-friendly: Increased letter spacing and line height */
+body {
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+/* High contrast mode */
+.high-contrast {
+  --background: #ffffff;
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --primary: #000000;
+  --primary-foreground: #ffffff;
+  --border: #000000;
+  color-scheme: light dark;
+}
+
+.high-contrast * {
+  border-color: #000000;
+}
+
+/* Reduced motion */
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Expanded spacing for better readability */
+.expanded-spacing {
+  --spacing-multiplier: 1.5;
+}
+
+.expanded-spacing p,
+.expanded-spacing li,
+.expanded-spacing div {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+}
+
+.expanded-spacing input,
+.expanded-spacing textarea,
+.expanded-spacing select {
+  padding: 0.75rem 1rem;
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+/* Larger text mode */
+.larger-text {
+  font-size: 1.25rem;
+}
+
+.larger-text h1 { font-size: 2.5rem; }
+.larger-text h2 { font-size: 2rem; }
+.larger-text h3 { font-size: 1.75rem; }
+.larger-text h4 { font-size: 1.5rem; }
+.larger-text p { font-size: 1.25rem; }
+.larger-text button { font-size: 1.125rem; padding: 0.75rem 1.5rem; }
+.larger-text input { font-size: 1.125rem; }

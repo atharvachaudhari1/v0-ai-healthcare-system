@@ -2,13 +2,14 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { AccessibilityProvider } from '@/lib/accessibility-context'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'MediAI - AI-Powered Healthcare Platform',
+  description: 'AI-powered medical intake and appointment management system with voice agent assessment',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -37,7 +38,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
-        {children}
+        <AccessibilityProvider>
+          {children}
+        </AccessibilityProvider>
         <Analytics />
       </body>
     </html>
