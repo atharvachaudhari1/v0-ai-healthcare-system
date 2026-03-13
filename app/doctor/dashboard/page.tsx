@@ -1,88 +1,53 @@
-'use client';
+'use client'
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-import DoctorNav from '@/components/doctor/doctor-nav';
-import PatientQueue from '@/components/doctor/patient-queue';
-import ManageSlots from '@/components/doctor/manage-slots';
-import AppointmentsView from '@/components/doctor/appointments-view';
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+import { DoctorDashboard } from '@/components/doctor-dashboard'
+import { AccessibilityPanel } from '@/components/accessibility-panel'
 
-export default function DoctorDashboard() {
-  const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'queue' | 'slots' | 'appointments'>('queue');
-  const [doctorProfile, setDoctorProfile] = useState<any>(null);
+export default function DoctorDashboardPage() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const checkUser = async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const supabase = createClient()
+      const { data: { user }, error } = await supabase.auth.getUser()
 
-      if (!user) {
-        router.push('/auth/login?role=doctor');
-        return;
+      if (error || !user) {
+        router.push('/auth/login')
+        return
       }
 
-      const userRole = user.user_metadata?.role;
+      const userRole = user.user_metadata?.role
       if (userRole !== 'doctor') {
-        router.push('/');
-        return;
+        router.push('/')
+        return
       }
 
-      setUser(user);
+      setLoading(false)
+    }
 
-      // Fetch doctor profile
-      const { data: profile } = await supabase
-        .from('doctor_profiles')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      setDoctorProfile(profile);
-      setLoading(false);
-    };
-
-    checkUser();
-  }, [router]);
+    checkUser()
+  }, [router])
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
-        <div className="text-white">Loading doctor dashboard...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted">
+        <div className="text-foreground">Loading...</div>
       </div>
-    );
+    )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <DoctorNav user={user} onTabChange={setActiveTab} />
-
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Welcome back, Dr. {user?.user_metadata?.last_name}
-          </h1>
-          <p className="text-slate-300">Manage your appointments and patient queue</p>
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted p-4 md:p-8">
+        <div className="max-w-6xl mx-auto">
+          <DoctorDashboard />
         </div>
-
-        {/* Content */}
-        <div>
-          {activeTab === 'queue' && (
-            <PatientQueue doctorId={doctorProfile?.id} doctorUserId={user?.id} />
-          )}
-          {activeTab === 'slots' && (
-            <ManageSlots doctorId={doctorProfile?.id} doctorUserId={user?.id} />
-          )}
-          {activeTab === 'appointments' && (
-            <AppointmentsView doctorId={doctorProfile?.id} doctorUserId={user?.id} />
-          )}
-        </div>
-      </main>
-    </div>
-  );
+      </div>
+      <AccessibilityPanel />
+    </>
+  )
 }

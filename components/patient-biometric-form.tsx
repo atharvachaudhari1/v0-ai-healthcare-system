@@ -24,11 +24,11 @@ interface BiometricData {
 }
 
 interface PatientBiometricFormProps {
-  onSuccess?: () => void
+  userId: string
+  onSubmit: (data: BiometricData) => void
 }
 
-export function PatientBiometricForm({ onSuccess }: PatientBiometricFormProps) {
-  const router = useRouter()
+export function PatientBiometricForm({ userId, onSubmit }: PatientBiometricFormProps) {
   const supabase = createClient()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -62,21 +62,18 @@ export function PatientBiometricForm({ onSuccess }: PatientBiometricFormProps) {
     setError(null)
 
     try {
-      const { data: { user }, error: authError } = await supabase.auth.getUser()
-      if (authError || !user) throw new Error('User not authenticated')
-
       const { error: insertError } = await supabase
         .from('biometrics')
         .insert([
           {
-            patient_id: user.id,
+            patient_id: userId,
             ...formData,
           },
         ])
 
       if (insertError) throw insertError
 
-      router.push('/patient/voice-assessment')
+      onSubmit(formData)
     } catch (err: any) {
       setError(err.message || 'Failed to save biometric data')
     } finally {
