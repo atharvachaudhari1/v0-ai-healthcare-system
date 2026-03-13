@@ -126,6 +126,41 @@ export default function PatientDashboard() {
           </div>
         </div>
 
+        {/* Quick Actions */}
+        <div className="grid md:grid-cols-3 gap-4 mb-8">
+          <Button 
+            variant={currentStep === 'biometrics' ? 'default' : 'outline'}
+            onClick={() => setCurrentStep('biometrics')}
+            className="h-auto py-3"
+          >
+            <div className="text-left">
+              <div className="font-semibold">Biometric Data</div>
+              <div className="text-xs opacity-75">Health information</div>
+            </div>
+          </Button>
+          <Button 
+            variant={currentStep === 'assessment' ? 'default' : 'outline'}
+            disabled={!biometricsData}
+            onClick={() => setCurrentStep('assessment')}
+            className="h-auto py-3"
+          >
+            <div className="text-left">
+              <div className="font-semibold">Voice Assessment</div>
+              <div className="text-xs opacity-75">AI analysis</div>
+            </div>
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={() => router.push('/patient/disease-prediction')}
+            className="h-auto py-3 border-purple-300 hover:bg-purple-50"
+          >
+            <div className="text-left">
+              <div className="font-semibold">AI Disease Predictor</div>
+              <div className="text-xs opacity-75">Symptom analysis</div>
+            </div>
+          </Button>
+        </div>
+
         {/* Content */}
         <div className="grid gap-6">
           {currentStep === 'biometrics' && (

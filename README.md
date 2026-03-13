@@ -7,6 +7,7 @@ A comprehensive healthcare platform featuring AI voice assessment, intelligent r
 MediAI combines multiple AI technologies to create a modern healthcare system:
 
 - **Voice Assessment**: AI-powered medical intake using ElevenLabs voice agents
+- **AI Disease Predictor**: Hybrid ML + Gemini system for symptom analysis with explanation
 - **Risk Scoring**: ML algorithm for patient triage and severity assessment
 - **Smart Queue**: Doctors see patients sorted by medical urgency
 - **Digital Whiteboard**: Doctors draw/write notes, AI transcribes with Gemini Vision
@@ -64,6 +65,9 @@ NEXT_PUBLIC_GEMINI_API_KEY=your_api_key
 
 # Resend Email
 RESEND_API_KEY=your_api_key
+
+# Google Gemini AI (for Disease Predictor explanations)
+GOOGLE_API_KEY=your_api_key
 ```
 
 ### 3. Run Development Server
@@ -79,7 +83,7 @@ Visit http://localhost:3000
 ### Patient Journey
 
 ```
-Sign Up → Enter Biometrics → Voice Assessment → Risk Score → Book Appointment → Wait
+Sign Up → Enter Biometrics → Voice Assessment → Risk Score → AI Disease Predictor → Book Appointment → Wait
 ```
 
 **Patient Steps:**
@@ -87,8 +91,20 @@ Sign Up → Enter Biometrics → Voice Assessment → Risk Score → Book Appoin
 2. Complete biometric form (age, weight, height, vitals, medical history)
 3. Take voice assessment with AI agent (~5-10 minutes)
 4. View risk assessment and recommended specialty
-5. Book appointment with available doctor
-6. Receive appointment confirmation
+5. (Optional) Use AI Disease Predictor for symptom analysis with history tracking
+6. Book appointment with available doctor
+7. Receive appointment confirmation and medical records
+
+**AI Disease Predictor Features:**
+- Symptom input with 15+ common symptoms or custom entries
+- Pain location and duration selection
+- Optional biometric data (age, weight, height for BMI)
+- ML-based prediction with probability scoring
+- Gemini AI explanation of results
+- Precautions and doctor consultation guidance
+- Full prediction history with date tracking
+- Side-by-side comparison of up to 3 predictions
+- Trend analysis for consistent vs. inconsistent predictions
 
 ### Doctor Journey
 
@@ -234,7 +250,9 @@ Click the "A" button (bottom-right) to access:
 - `/` - Home/landing page with feature overview
 
 ### Patient Pages
+- `/patient/dashboard` - Main patient dashboard
 - `/patient/voice-assessment` - AI voice intake
+- `/patient/disease-prediction` - AI Disease Predictor with history and comparison
 - `/patient/book-appointment` - Schedule with doctor
 - `/patient/appointments` - View booked appointments
 
@@ -271,6 +289,38 @@ Response: {
 }
 ```
 Processes voice conversation from ElevenLabs agent, extracts symptoms, calculates risk score, and saves assessment to database.
+
+### AI Disease Prediction
+```
+POST /api/disease-prediction
+Body: {
+  symptoms: string[] (required)
+  painLocation?: string
+  duration?: string
+  severity?: number (1-10)
+  age?: number
+  weight?: number (kg)
+  height?: number (cm)
+  medicalHistory?: string[]
+}
+Response: {
+  success: boolean
+  prediction: {
+    id: string
+    disease: string
+    probability: number (0-1)
+    confidenceScore: number (0-100)
+    severityLevel: "Low" | "Medium" | "High" | "Critical"
+    riskFactors: string[]
+    explanation: string (Gemini-generated)
+    precautions: string[]
+    doctorConsultation: string
+    disclaimer: string
+    createdAt: string
+  }
+}
+```
+Analyzes reported symptoms using ML fallback system, generates explanation with Gemini AI, and stores prediction history in Supabase.
 
 ### Send Prescription Email
 ```
