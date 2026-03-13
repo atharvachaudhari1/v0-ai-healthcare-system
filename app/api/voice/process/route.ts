@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { calculateRiskScore } from '@/lib/risk-scoring'
+import { scoreRisk } from '@/lib/risk-scoring'
 
 // This API route handles audio processing from ElevenLabs
 // It will transcribe the audio and assess the patient's symptoms
@@ -42,9 +42,10 @@ export async function POST(request: NextRequest) {
       severity: 7,
       duration: '3 days',
       specialty: 'Cardiology',
-      risk_score: calculateRiskScore(biometrics, {
-        symptom_severity: 7,
-        chest_pain: true,
+      risk_score: scoreRisk({
+        symptoms: ['chest_pain'],
+        severity: 7,
+        medicalHistory: biometrics?.medical_history || [],
       }),
       notes: 'Patient experiencing chest pain - requires urgent cardiology assessment',
     }

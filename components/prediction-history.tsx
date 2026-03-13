@@ -103,7 +103,7 @@ export function PredictionHistory({ userId, onSelectPrediction }: PredictionHist
               }}
               className={`w-full text-left p-3 rounded-lg border-2 transition-all ${
                 selectedId === prediction.id
-                  ? 'border-blue-500 bg-blue-50'
+                  ? 'border-[#0F9D6C] bg-[#E0F2FE]'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
             >
@@ -159,14 +159,14 @@ export function PredictionHistory({ userId, onSelectPrediction }: PredictionHist
             <CardContent>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-3xl font-bold text-blue-600">{selectedPrediction.confidenceScore}%</p>
+                  <p className="text-3xl font-bold text-[#0F9D6C]">{selectedPrediction.confidenceScore}%</p>
                   <p className="text-xs text-gray-500">
                     Probability: {(selectedPrediction.probability * 100).toFixed(0)}%
                   </p>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                   <div
-                    className="bg-blue-600 h-full transition-all"
+                    className="bg-[#0F9D6C] h-full transition-all"
                     style={{ width: `${selectedPrediction.confidenceScore}%` }}
                   />
                 </div>

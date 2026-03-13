@@ -87,7 +87,7 @@ export function AuthForm({ mode, onSuccess }: AuthFormProps) {
           <CardDescription>
             {mode === 'login'
               ? 'Sign in to access your healthcare dashboard'
-              : 'Join MediAI for AI-powered medical care'}
+              : 'Join AyuAi for AI-powered medical care'}
           </CardDescription>
         </CardHeader>
         <CardContent>

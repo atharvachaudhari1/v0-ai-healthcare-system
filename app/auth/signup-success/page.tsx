@@ -1,11 +1,11 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-export default function SignUpSuccessPage() {
+function SignUpSuccessContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const role = searchParams.get('role') || 'patient';
@@ -19,6 +19,28 @@ export default function SignUpSuccessPage() {
     return () => clearTimeout(timer);
   }, [router, role]);
 
+  return (
+    <>
+      <div className="space-y-3">
+        <Link href={`/auth/login?role=${role}`}>
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+            Go to Login
+          </Button>
+        </Link>
+        <Link href="/">
+          <Button variant="outline" className="w-full text-white border-white/20 hover:bg-white/10">
+            Back to Home
+          </Button>
+        </Link>
+      </div>
+      <p className="text-xs text-slate-500 mt-6">
+        Redirecting login as {role} in 5 seconds...
+      </p>
+    </>
+  );
+}
+
+export default function SignUpSuccessPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
@@ -37,29 +59,13 @@ export default function SignUpSuccessPage() {
           <p className="text-slate-300 mb-6">
             Your account has been successfully created. A confirmation email has been sent to your email address.
           </p>
-
           <p className="text-slate-400 text-sm mb-8">
             Please check your email to confirm your account. You will be redirected to login in a few seconds.
           </p>
 
-          {/* Action Buttons */}
-          <div className="space-y-3">
-            <Link href={`/auth/login?role=${role}`}>
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                Go to Login
-              </Button>
-            </Link>
-            <Link href="/">
-              <Button variant="outline" className="w-full text-white border-white/20 hover:bg-white/10">
-                Back to Home
-              </Button>
-            </Link>
-          </div>
-
-          {/* Note */}
-          <p className="text-xs text-slate-500 mt-6">
-            Redirecting in 5 seconds...
-          </p>
+          <Suspense fallback={<p className="text-white text-sm">Loading...</p>}>
+            <SignUpSuccessContent />
+          </Suspense>
         </div>
       </div>
     </main>

@@ -18,7 +18,7 @@ export default function DoctorNav({ user, onTabChange }: { user: any; onTabChang
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center mb-4">
           <div>
-            <h2 className="text-xl font-bold text-white">MediAI</h2>
+            <h2 className="text-xl font-bold text-white">AyuAi</h2>
             <p className="text-xs text-slate-400">Doctor Portal</p>
           </div>
           <div className="flex items-center gap-4">

@@ -49,11 +49,11 @@ export default function DiseasePredictionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
+    <div className="min-h-screen bg-[#F3F5F6] p-4 md:p-8 font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">AI Disease Predictor</h1>
+          <h1 className="text-4xl font-semibold text-[#1F2937]">AyuAI Predictor</h1>
           <p className="text-gray-600 mt-2">
             Analyze your symptoms and get preliminary health insights powered by AI
           </p>
@@ -61,14 +61,14 @@ export default function DiseasePredictionPage() {
 
         {/* Latest Prediction Alert */}
         {latestPrediction && (
-          <Card className="mb-8 border-blue-200 bg-blue-50">
+          <Card className="mb-8 border-[#A7F3D0] bg-[#F9FAFB] shadow-sm rounded-2xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg">Latest Prediction</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-gray-700">
                 <span className="font-semibold">{latestPrediction.disease}</span> - 
-                Confidence: <span className="font-bold text-blue-600">{latestPrediction.confidenceScore}%</span>
+                Confidence: <span className="font-bold text-[#0F9D6C]">{latestPrediction.confidenceScore}%</span>
               </p>
             </CardContent>
           </Card>
@@ -82,9 +82,8 @@ export default function DiseasePredictionPage() {
             <TabsTrigger value="comparison">Compare</TabsTrigger>
           </TabsList>
 
-          {/* New Prediction Tab */}
           <TabsContent value="predictor" className="space-y-4">
-            <Card>
+            <Card className="rounded-[16px] shadow-[0_10px_25px_rgba(0,0,0,0.05)] border-0">
               <CardHeader>
                 <CardTitle>Symptom Analysis</CardTitle>
                 <CardDescription>
@@ -99,7 +98,7 @@ export default function DiseasePredictionPage() {
 
           {/* History Tab */}
           <TabsContent value="history" className="space-y-4">
-            <Card>
+            <Card className="rounded-[16px] shadow-[0_10px_25px_rgba(0,0,0,0.05)] border-0">
               <CardHeader>
                 <CardTitle>Prediction History</CardTitle>
                 <CardDescription>
@@ -114,7 +113,7 @@ export default function DiseasePredictionPage() {
 
           {/* Comparison Tab */}
           <TabsContent value="comparison" className="space-y-4">
-            <Card>
+            <Card className="rounded-[16px] shadow-[0_10px_25px_rgba(0,0,0,0.05)] border-0">
               <CardHeader>
                 <CardTitle>Compare Predictions</CardTitle>
                 <CardDescription>
@@ -130,7 +129,7 @@ export default function DiseasePredictionPage() {
 
         {/* Info Cards */}
         <div className="grid md:grid-cols-2 gap-6 mt-8">
-          <Card>
+          <Card className="rounded-[16px] shadow-[0_10px_25px_rgba(0,0,0,0.05)] border-0 bg-[#FFFFFF]">
             <CardHeader>
               <CardTitle className="text-base">How It Works</CardTitle>
             </CardHeader>
@@ -154,11 +153,11 @@ export default function DiseasePredictionPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-amber-50 border-amber-200">
+          <Card className="rounded-[16px] border-[#A7F3D0] bg-[#F9FAFB] shadow-[0_10px_25px_rgba(0,0,0,0.05)]">
             <CardHeader>
-              <CardTitle className="text-base text-amber-900">Important Disclaimer</CardTitle>
+              <CardTitle className="text-base text-[#1F2937]">Important Disclaimer</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-amber-800 space-y-2">
+            <CardContent className="text-sm text-[#6B7280] space-y-2">
               <p>
                 This AI Disease Predictor is a preliminary analysis tool and should not be considered a medical diagnosis.
               </p>

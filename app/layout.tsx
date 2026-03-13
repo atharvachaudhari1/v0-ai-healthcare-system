@@ -1,16 +1,15 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { AccessibilityProvider } from '@/lib/accessibility-context'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
-  title: 'MediAI - AI-Powered Healthcare Platform',
+  title: 'AyuAi - Medical Predictor & Assistant',
   description: 'AI-powered medical intake and appointment management system with voice agent assessment',
-  generator: 'v0.app',
+  generator: 'AyuAi',
   icons: {
     icon: [
       {
@@ -37,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
+      <body className={`${inter.variable} font-sans antialiased text-[#1F2937] bg-[#F3F5F6]`}>
         <AccessibilityProvider>
           {children}
         </AccessibilityProvider>

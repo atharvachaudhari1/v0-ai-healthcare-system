@@ -8,7 +8,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { useRouter } from 'next/navigation'
 
 // ElevenLabs System Prompt for Medical Assessment
-const MEDICAL_SYSTEM_PROMPT = `You are MediAI, a professional medical intake specialist AI agent. Your role is to conduct a thorough medical assessment through conversation with the patient.
+const MEDICAL_SYSTEM_PROMPT = `You are AyuAi, a professional medical intake specialist AI agent. Your role is to conduct a thorough medical assessment through conversation with the patient.
 
 ASSESSMENT PROTOCOL:
 1. Greeting: Greet warmly and explain you'll be asking about their health concerns

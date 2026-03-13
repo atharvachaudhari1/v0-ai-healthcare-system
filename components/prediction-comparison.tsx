@@ -148,11 +148,11 @@ export function PredictionComparison({ userId }: PredictionComparisonProps) {
                     <div className="flex items-end justify-between">
                       <div className="w-full bg-gray-200 rounded-full h-2 mr-2">
                         <div
-                          className="bg-blue-600 h-full rounded-full"
+                          className="bg-[#0F9D6C] h-full rounded-full"
                           style={{ width: `${prediction.confidenceScore}%` }}
                         />
                       </div>
-                      <p className="text-sm font-bold text-blue-600 whitespace-nowrap">{prediction.confidenceScore}%</p>
+                      <p className="text-sm font-bold text-[#0F9D6C] whitespace-nowrap">{prediction.confidenceScore}%</p>
                     </div>
                   </div>
 

@@ -1,268 +1,125 @@
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PlayCircle, Search, Moon } from 'lucide-react'
+
+// SVG placeholder for the logo based on the image provided
+const AyuAiLogo = () => (
+  <svg
+    viewBox="0 0 200 200"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-20 h-20 mb-4"
+  >
+    <path
+      d="M100 20C100 20 120 60 140 70C160 80 150 120 130 140C110 160 100 160 100 160C100 160 80 160 60 140C40 120 30 80 50 70C70 60 100 20 100 20Z"
+      fill="#E6AE8C"
+      opacity="0.9"
+    />
+    <path
+      d="M100 60C111.046 60 120 51.0457 120 40C120 28.9543 111.046 20 100 20C88.9543 20 80 28.9543 80 40C80 51.0457 88.9543 60 100 60Z"
+      fill="#E6AE8C"
+    />
+    <path
+      d="M50 100C30 120 20 150 50 180C80 180 120 160 160 130C160 130 130 140 100 140C70 140 50 100 50 100Z"
+      fill="#43776C"
+    />
+    <path
+      d="M50 120Q70 90 90 120Q70 130 50 120Z"
+      fill="#43776C"
+    />
+    <circle cx="150" cy="50" r="5" fill="#E6AE8C" />
+    <circle cx="170" cy="80" r="3" fill="#E6AE8C" />
+    <circle cx="140" cy="30" r="2" fill="#E6AE8C" />
+  </svg>
+)
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted to-background">
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        {/* Header Navigation */}
-        <div className="flex justify-between items-center mb-16">
-          <div className="text-2xl font-bold">MediAI</div>
-          <div className="flex gap-4">
-            <Link href="/auth/login">
-              <Button variant="outline">Sign In</Button>
-            </Link>
-            <Link href="/auth/signup">
-              <Button>Get Started</Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Hero Section */}
-        <div className="text-center mb-20">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-balance">
-            Healthcare Reimagined with AI
+    <div className="min-h-screen bg-[#F3F5F6] flex flex-col justify-between font-sans selection:bg-[#0F9D6C]/20">
+      
+      {/* Main Content Area */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 pt-16 sm:pt-24 text-center">
+        
+        {/* Logo and Branding */}
+        <div className="flex flex-col items-center mb-8">
+          <AyuAiLogo />
+          <h1 className="text-4xl font-semibold text-[#0B3B32] tracking-tight">
+            Ayu<span className="text-[#43776C]">Ai</span>
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Experience intelligent medical assessment, risk scoring, and seamless doctor appointments powered by AI voice technology.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/auth/signup?role=patient">
-              <Button size="lg" className="gap-2">
-                Start as Patient
-              </Button>
-            </Link>
-            <Link href="/auth/signup?role=doctor">
-              <Button size="lg" variant="outline">
-                Start as Doctor
-              </Button>
-            </Link>
-          </div>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-20">
-          <Card>
-            <CardHeader>
-              <div className="text-3xl mb-2">🎙️</div>
-              <CardTitle>Voice Assessment</CardTitle>
-              <CardDescription>
-                AI-powered medical intake through natural conversation
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Our advanced voice agent conducts thorough symptom assessments in just minutes, understanding your health concerns naturally.
-              </p>
-            </CardContent>
-          </Card>
+        {/* Hero Copy */}
+        <h2 className="text-2xl sm:text-3xl text-gray-700 font-medium mb-4 max-w-2xl text-balance">
+          The bridge between your visit and your health.
+        </h2>
+        
+        <p className="text-gray-500 mb-10 max-w-xl text-balance">
+          AI-powered post-visit companion that helps you understand, remember, and follow through.
+        </p>
 
-          <Card>
-            <CardHeader>
-              <div className="text-3xl mb-2">📊</div>
-              <CardTitle>Risk Scoring</CardTitle>
-              <CardDescription>
-                Intelligent severity assessment and specialty matching
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Our algorithm analyzes symptoms, vitals, and medical history to provide accurate risk levels and recommend the right specialist.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="text-3xl mb-2">👨‍⚕️</div>
-              <CardTitle>Smart Queue</CardTitle>
-              <CardDescription>
-                Doctor appointments prioritized by medical urgency
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Doctors see patients in order of medical priority, ensuring critical cases get immediate attention while others are scheduled efficiently.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="text-3xl mb-2">✍️</div>
-              <CardTitle>Digital Whiteboard</CardTitle>
-              <CardDescription>
-                AI-powered clinical note transcription
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Doctors draw and write notes freely. Our AI instantly transcribes them into structured medical documentation.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="text-3xl mb-2">📧</div>
-              <CardTitle>Email Delivery</CardTitle>
-              <CardDescription>
-                Instant prescription and summary distribution
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Patients receive complete appointment summaries, prescriptions, and clinical notes immediately after their visit.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <div className="text-3xl mb-2">♿</div>
-              <CardTitle>Accessible Design</CardTitle>
-              <CardDescription>
-                ADHD and dyslexia-friendly interface
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Multiple accessibility modes including dyslexia-friendly fonts, high contrast, and customizable spacing for all users.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* How It Works */}
-        <div className="mb-20">
-          <h2 className="text-3xl font-bold mb-12 text-center">How It Works</h2>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h3 className="text-xl font-semibold mb-6">For Patients</h3>
-              <ol className="space-y-4">
-                <li className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
-                    1
-                  </div>
-                  <div>
-                    <p className="font-medium">Enter Health Information</p>
-                    <p className="text-sm text-muted-foreground">
-                      Provide biometrics and medical history
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
-                    2
-                  </div>
-                  <div>
-                    <p className="font-medium">Voice Assessment</p>
-                    <p className="text-sm text-muted-foreground">
-                      Chat with AI about your symptoms
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
-                    3
-                  </div>
-                  <div>
-                    <p className="font-medium">Receive Risk Assessment</p>
-                    <p className="text-sm text-muted-foreground">
-                      See your risk score and recommended specialist
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
-                    4
-                  </div>
-                  <div>
-                    <p className="font-medium">Book Appointment</p>
-                    <p className="text-sm text-muted-foreground">
-                      Schedule with a doctor in your specialty
-                    </p>
-                  </div>
-                </li>
-              </ol>
+        {/* Action Elements */}
+        <div className="flex flex-col items-center gap-8 w-full max-w-sm">
+          
+          {/* Watch Demo */}
+          <button className="flex items-center gap-2 text-[#0F9D6C] font-medium hover:text-[#0C7F57] transition-colors group">
+            <div className="bg-[#E0F2FE] p-2 rounded-full group-hover:bg-[#d1ece0] transition-colors">
+              <PlayCircle className="w-5 h-5 fill-current text-[#0F9D6C] stroke-white" />
             </div>
+            Watch Demo Video
+          </button>
 
-            <div>
-              <h3 className="text-xl font-semibold mb-6">For Doctors</h3>
-              <ol className="space-y-4">
-                <li className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center font-bold">
-                    1
-                  </div>
-                  <div>
-                    <p className="font-medium">View Smart Queue</p>
-                    <p className="text-sm text-muted-foreground">
-                      See patients sorted by medical urgency
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center font-bold">
-                    2
-                  </div>
-                  <div>
-                    <p className="font-medium">Review Patient Data</p>
-                    <p className="text-sm text-muted-foreground">
-                      See symptoms, vitals, and risk assessment
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center font-bold">
-                    3
-                  </div>
-                  <div>
-                    <p className="font-medium">Document with Whiteboard</p>
-                    <p className="text-sm text-muted-foreground">
-                      Draw notes and observations freely
-                    </p>
-                  </div>
-                </li>
-                <li className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center font-bold">
-                    4
-                  </div>
-                  <div>
-                    <p className="font-medium">AI Transcribes & Sends</p>
-                    <p className="text-sm text-muted-foreground">
-                      System converts notes and sends to patient
-                    </p>
-                  </div>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="bg-primary/10 border border-primary/20 rounded-lg p-12 text-center mb-20">
-          <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Healthcare?</h2>
-          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-            Join thousands of patients and doctors using MediAI for smarter, faster healthcare.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/auth/signup?role=patient">
-              <Button size="lg">Sign Up as Patient</Button>
+          {/* Auth Buttons */}
+          <div className="flex flex-row w-full gap-4 justify-center">
+            <Link href="/auth/signup?role=patient" className="flex-1">
+              <Button 
+                className="w-full h-12 rounded-xl bg-[#0F9D6C] hover:bg-[#0C7F57] text-white shadow-lg shadow-[#0F9D6C]/20 font-medium text-base transition-all active:scale-95"
+              >
+                Sign Up
+              </Button>
             </Link>
-            <Link href="/auth/signup?role=doctor">
-              <Button size="lg" variant="outline">
-                Sign Up as Doctor
+            
+            <Link href="/auth/login" className="flex-1">
+              <Button 
+                variant="outline" 
+                className="w-full h-12 rounded-xl text-[#0F9D6C] border border-[#0F9D6C] hover:bg-[#E0F2FE]/50 font-medium text-base transition-all active:scale-95"
+              >
+                Sign In
               </Button>
             </Link>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="text-center text-muted-foreground">
-          <p>© 2024 MediAI. All rights reserved.</p>
+          {/* Search CTA */}
+          <button className="flex items-center gap-2 text-gray-400 hover:text-gray-600 transition-colors mt-2 text-sm">
+            <Search className="w-4 h-4" />
+            Find a Doctor by Symptoms
+          </button>
+        </div>
+      </main>
+
+      {/* Footer Area */}
+      <footer className="w-full py-8 px-6 mt-16 text-center text-xs text-gray-400 flex flex-col items-center max-w-2xl mx-auto space-y-4">
+        <p className="leading-relaxed text-balance">
+          AyuAi helps you understand and act on your doctor's recommendations. It is not a 
+          substitute for professional medical judgment.
+        </p>
+        <p>
+          Built by <span className="underline decoration-gray-300">junaidjmomin</span> for the Built with Opus 4.6 hackathon by <span className="underline decoration-gray-300">Anthropic</span>
+        </p>
+      </footer>
+
+      {/* Focus Mode Toast / Toggle (Decorative) */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <div className="bg-[#1f2937] text-white rounded-full px-4 py-2 flex items-center gap-3 shadow-xl cursor-pointer hover:bg-gray-800 transition-colors">
+          <div className="bg-pink-400 w-4 h-4 rounded-full flex items-center justify-center">
+            <Moon className="w-2.5 h-2.5 text-white" fill="currentColor"/>
+          </div>
+          <span className="text-sm font-semibold tracking-wide pr-1">Focus Mode</span>
+          <div className="w-8 h-4 bg-gray-600 rounded-full relative">
+            <div className="absolute right-0.5 top-0.5 w-3 h-3 bg-white rounded-full shadow-sm"></div>
+          </div>
         </div>
       </div>
+
     </div>
   )
 }

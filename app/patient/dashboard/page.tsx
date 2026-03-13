@@ -72,7 +72,7 @@ export default function PatientDashboard() {
   return (
     <div
       className={`min-h-screen ${
-        settings.highContrast ? 'bg-black text-white' : 'bg-gradient-to-br from-blue-50 to-indigo-100'
+        settings.highContrast ? 'bg-black text-white' : 'bg-[#F3F5F6]'
       }`}
       style={{
         fontSize: settings.largerText ? '18px' : '16px',
@@ -86,7 +86,7 @@ export default function PatientDashboard() {
             <h1 className={`text-3xl font-bold ${settings.largerText ? 'text-4xl' : ''}`}>
               Welcome, {user?.user_metadata?.first_name || 'Patient'}
             </h1>
-            <p className="text-muted-foreground mt-2">MediAI Patient Portal</p>
+            <p className="text-muted-foreground mt-2">AyuAI Patient Portal</p>
           </div>
           <Button variant="outline" onClick={handleLogout}>
             Logout
@@ -106,7 +106,7 @@ export default function PatientDashboard() {
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all ${
                       currentStep === step.id || (step.id === 'assessment' && biometricsData)
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-[#0F9D6C] text-white'
                         : 'bg-gray-300 text-gray-600'
                     }`}
                   >
@@ -115,7 +115,7 @@ export default function PatientDashboard() {
                   {index < 2 && (
                     <div
                       className={`flex-1 h-1 mx-2 ${
-                        biometricsData ? 'bg-blue-600' : 'bg-gray-300'
+                        biometricsData ? 'bg-[#0F9D6C]' : 'bg-gray-300'
                       }`}
                     />
                   )}
@@ -152,10 +152,10 @@ export default function PatientDashboard() {
           <Button 
             variant="outline"
             onClick={() => router.push('/patient/disease-prediction')}
-            className="h-auto py-3 border-purple-300 hover:bg-purple-50"
+            className="h-auto py-3 border-[#A7F3D0] hover:bg-[#F9FAFB]"
           >
             <div className="text-left">
-              <div className="font-semibold">AI Disease Predictor</div>
+              <div className="font-semibold text-[#0F9D6C]">AyuAI Predictor</div>
               <div className="text-xs opacity-75">Symptom analysis</div>
             </div>
           </Button>

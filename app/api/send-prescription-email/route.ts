@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
           ` : ''}
 
           <div class="footer">
-            <p>This is an automated email from MediAI Healthcare System.</p>
+            <p>This is an automated email from AyuAi Healthcare System.</p>
             <p>If you have questions about your appointment, please contact your healthcare provider.</p>
           </div>
         </div>

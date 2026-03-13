@@ -1,11 +1,9 @@
-import { GoogleGenerativeAI } from '@ai-sdk/google';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 
-const google = new GoogleGenerativeAI({
-  apiKey: process.env.GOOGLE_API_KEY,
-});
+const google = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY as string);
 
 const TranscriptionSchema = z.object({
   transcription: z.string(),

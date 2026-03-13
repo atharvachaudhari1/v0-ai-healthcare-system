@@ -131,12 +131,12 @@ export function DiseasePredictor({ onPredictionComplete }: DiseasePredictorProps
                     {selectedSymptoms.map(symptom => (
                       <div
                         key={symptom}
-                        className="bg-blue-100 text-blue-800 rounded-full px-3 py-1 text-sm flex items-center gap-2"
+                        className="bg-[#E0F2FE] text-[#0F9D6C] rounded-full px-3 py-1 text-sm flex items-center gap-2"
                       >
                         {symptom}
                         <button
                           onClick={() => handleRemoveSymptom(symptom)}
-                          className="ml-1 hover:text-blue-600"
+                          className="ml-1 hover:text-[#0C7F57]"
                         >
                           ×
                         </button>
@@ -156,8 +156,8 @@ export function DiseasePredictor({ onPredictionComplete }: DiseasePredictorProps
                       onClick={() => handleAddSymptom(symptom)}
                       className={`p-3 rounded-lg border-2 transition-colors text-left ${
                         selectedSymptoms.includes(symptom)
-                          ? 'border-blue-500 bg-blue-50'
-                          : 'border-gray-200 hover:border-blue-300'
+                          ? 'border-[#0F9D6C] bg-[#E0F2FE]'
+                          : 'border-gray-200 hover:border-[#A7F3D0]'
                       }`}
                     >
                       <p className="text-sm font-medium">{symptom}</p>
@@ -352,11 +352,11 @@ export function DiseasePredictor({ onPredictionComplete }: DiseasePredictorProps
             <CardContent className="space-y-3">
               <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                 <div
-                  className="bg-blue-600 h-full transition-all"
+                  className="bg-[#0F9D6C] h-full transition-all"
                   style={{ width: `${result.confidenceScore}%` }}
                 />
               </div>
-              <p className="text-2xl font-bold text-blue-600">{result.confidenceScore}%</p>
+              <p className="text-2xl font-bold text-[#0F9D6C]">{result.confidenceScore}%</p>
             </CardContent>
           </Card>
 
@@ -407,12 +407,12 @@ export function DiseasePredictor({ onPredictionComplete }: DiseasePredictorProps
           </Card>
 
           {/* Doctor Consultation */}
-          <Card className="bg-blue-50 border-blue-200">
+          <Card className="bg-[#E0F2FE] border-[#A7F3D0]">
             <CardHeader>
-              <CardTitle className="text-lg text-blue-900">When to Consult a Doctor</CardTitle>
+              <CardTitle className="text-lg text-[#0F9D6C]">When to Consult a Doctor</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-blue-800">{result.doctorConsultation}</p>
+              <p className="text-sm text-[#0C7F57]">{result.doctorConsultation}</p>
             </CardContent>
           </Card>
 
