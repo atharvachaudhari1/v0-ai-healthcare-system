@@ -4,6 +4,8 @@ import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Spinner } from '@/components/ui/spinner'
+import { BlockchainBadge } from '@/components/blockchain-badge'
+import { computeHash, shortHash, type BlockchainAnchor } from '@/lib/blockchain'
 import html2canvas from 'html2canvas'
 
 interface DoctorWhiteboardProps {
@@ -22,6 +24,10 @@ export function DoctorWhiteboard({
   const [isTranscribing, setIsTranscribing] = useState(false)
   const [transcription, setTranscription] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
+  // Blockchain snapshot state
+  const [snapshotHash, setSnapshotHash] = useState<string | null>(null)
+  const [isSnapshoting, setIsSnapshoting] = useState(false)
+  const [snapshotAnchor, setSnapshotAnchor] = useState<BlockchainAnchor | null>(null)
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     setIsDrawing(true)
@@ -149,6 +155,43 @@ export function DoctorWhiteboard({
     }
   }
 
+  const takeSnapshotHash = async () => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    setIsSnapshoting(true)
+    try {
+      const imageData = canvas.toDataURL('image/png')
+      // Hash the raw pixel data so any drawing change invalidates the hash
+      const hash = await computeHash(imageData)
+      setSnapshotHash(hash)
+
+      // Build a minimal anchor stub for the whiteboard snapshot
+      // (Full anchor happens when appointment is completed)
+      const now = new Date().toISOString()
+      const simTx = await computeHash(`${hash}:${now}:whiteboard-snapshot`)
+      const genesis = new Date('2024-01-01T00:00:00Z').getTime()
+      const blockNumber = Math.floor((Date.now() - genesis) / 15000)
+      const network = process.env.NEXT_PUBLIC_BLOCKCHAIN_NETWORK || 'mock'
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || ''
+
+      setSnapshotAnchor({
+        recordId: `wb_snap_${appointmentId}_${Date.now()}`,
+        appointmentId,
+        payloadHash: hash,
+        txHash: `0x${simTx}`,
+        blockNumber,
+        anchoredAt: now,
+        network,
+        verifyUrl: `${appUrl}/patient/verify-record/${appointmentId}`,
+        status: 'anchored',
+      })
+    } catch {
+      // silent fail — snapshot is best-effort
+    } finally {
+      setIsSnapshoting(false)
+    }
+  }
+
   return (
     <div className="space-y-4">
       <Card>
@@ -178,20 +221,52 @@ export function DoctorWhiteboard({
           <div className="flex gap-2 flex-wrap">
             <Button
               onClick={transcribeWhiteboard}
-              disabled={isTranscribing}
+              disabled={isTranscribing || isSnapshoting}
               className="flex-1"
             >
               {isTranscribing && <Spinner className="mr-2" />}
               Transcribe with AI
             </Button>
             <Button
+              onClick={takeSnapshotHash}
+              disabled={isTranscribing || isSnapshoting}
+              variant="outline"
+              className="border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+              title="Compute SHA-256 fingerprint of current whiteboard state"
+            >
+              {isSnapshoting ? <Spinner className="mr-2" /> : (
+                <svg className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              )}
+              Lock Snapshot
+            </Button>
+            <Button
               onClick={clearCanvas}
               variant="outline"
-              disabled={isTranscribing}
+              disabled={isTranscribing || isSnapshoting}
             >
               Clear
             </Button>
           </div>
+
+          {/* Whiteboard Blockchain Snapshot */}
+          {snapshotHash && (
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs space-y-1">
+              <div className="flex items-center gap-1.5 text-emerald-800 font-semibold">
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                Whiteboard snapshot locked
+              </div>
+              <div className="font-mono text-emerald-700 break-all">
+                SHA-256: {shortHash(snapshotHash, 20)}
+              </div>
+              <p className="text-emerald-600 italic">
+                Any change to the whiteboard will produce a different hash. Final anchor is created at consultation close.
+              </p>
+            </div>
+          )}
 
           {error && (
             <div className="p-3 bg-destructive/10 text-destructive rounded-md text-sm">

@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { PatientBiometricForm } from '@/components/patient-biometric-form'
 import { PatientVoiceAssessment } from '@/components/patient-voice-assessment'
 import { PatientAppointmentBooking } from '@/components/patient-appointment-booking'
+import { PatientRecords } from '@/components/patient-records'
 import { AccessibilityPanel } from '@/components/accessibility-panel'
 import { useAccessibility } from '@/lib/accessibility-context'
 import { Button } from '@/components/ui/button'
@@ -184,6 +185,9 @@ export default function PatientDashboard() {
           {currentStep === 'booking' && (
             <PatientAppointmentBooking userId={user?.id} biometricsData={biometricsData} />
           )}
+
+          {/* Blockchain-verified clinical records — always visible */}
+          {user?.id && <PatientRecords userId={user.id} />}
         </div>
       </div>
 

@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ai-sdk/google": "latest",
+    "ethers": "^6.13.4",
+    "html2canvas": "^1.4.1",
     "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "1.2.12",

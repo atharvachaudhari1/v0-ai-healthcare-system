@@ -8,6 +8,8 @@ import { FieldGroup, FieldLabel } from '@/components/ui/field'
 import { DoctorWhiteboard } from '@/components/doctor-whiteboard'
 import { Spinner } from '@/components/ui/spinner'
 import { useRouter } from 'next/navigation'
+import { BlockchainStatusCard } from '@/components/blockchain-badge'
+import type { BlockchainAnchor } from '@/lib/blockchain'
 
 interface PatientData {
   full_name: string
@@ -46,6 +48,9 @@ export function AppointmentInterface({ appointmentId }: AppointmentInterfaceProp
   const [isSending, setIsSending] = useState(false)
   const [transcription, setTranscription] = useState('')
   const [whiteboardImage, setWhiteboardImage] = useState('')
+  const [blockchainAnchor, setBlockchainAnchor] = useState<BlockchainAnchor | null>(null)
+  const [isAnchoring, setIsAnchoring] = useState(false)
+  const [blockchainError, setBlockchainError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchAppointmentData = async () => {
@@ -113,9 +118,39 @@ export function AppointmentInterface({ appointmentId }: AppointmentInterfaceProp
 
     setIsSending(true)
     setError(null)
+    setBlockchainError(null)
 
     try {
-      // Send email with prescription and transcription
+      // Step 1: Anchor consultation to blockchain
+      setIsAnchoring(true)
+      const anchorResponse = await fetch('/api/blockchain/anchor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          appointmentId,
+          patientId: null, // server will use auth context
+          transcription,
+          prescription,
+          notes,
+          vitals: {
+            heartRate: patientData.biometrics?.heart_rate,
+            bloodPressure: patientData.biometrics?.blood_pressure_systolic
+              ? `${patientData.biometrics.blood_pressure_systolic}/${patientData.biometrics.blood_pressure_diastolic}`
+              : undefined,
+            temperature: patientData.biometrics?.temperature,
+          },
+        }),
+      })
+      if (anchorResponse.ok) {
+        const { anchor } = await anchorResponse.json()
+        setBlockchainAnchor(anchor)
+      } else {
+        const err = await anchorResponse.json()
+        setBlockchainError(err.error || 'Blockchain anchoring failed (non-fatal)')
+      }
+      setIsAnchoring(false)
+
+      // Step 2: Send email with prescription and transcription
       const response = await fetch('/api/send-prescription-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -134,7 +169,7 @@ export function AppointmentInterface({ appointmentId }: AppointmentInterfaceProp
         throw new Error('Failed to send email')
       }
 
-      // Update appointment status
+      // Step 3: Update appointment status
       await supabase
         .from('appointments')
         .update({ status: 'completed' })
@@ -142,6 +177,7 @@ export function AppointmentInterface({ appointmentId }: AppointmentInterfaceProp
 
       router.push('/doctor/dashboard')
     } catch (err: any) {
+      setIsAnchoring(false)
       setError(err.message || 'Failed to complete appointment')
     } finally {
       setIsSending(false)
@@ -302,6 +338,13 @@ export function AppointmentInterface({ appointmentId }: AppointmentInterfaceProp
           </CardContent>
         </Card>
 
+        {/* Blockchain Record */}
+        <BlockchainStatusCard
+          anchor={blockchainAnchor}
+          isAnchoring={isAnchoring}
+          error={blockchainError}
+        />
+
         {error && (
           <div className="p-3 bg-destructive/10 text-destructive rounded-md text-sm">
             {error}
@@ -311,12 +354,12 @@ export function AppointmentInterface({ appointmentId }: AppointmentInterfaceProp
         {/* Complete Button */}
         <Button
           onClick={handleCompleteAppointment}
-          disabled={isSending}
+          disabled={isSending || isAnchoring}
           size="lg"
           className="w-full"
         >
-          {isSending && <Spinner className="mr-2" />}
-          Complete Appointment & Send Email
+          {(isSending || isAnchoring) && <Spinner className="mr-2" />}
+          {isAnchoring ? 'Anchoring to Blockchain...' : 'Complete Appointment & Send Email'}
         </Button>
       </div>
     </div>
